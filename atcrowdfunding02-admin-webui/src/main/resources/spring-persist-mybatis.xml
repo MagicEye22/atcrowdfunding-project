@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--加载外部属性文件-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--配置数据源-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--配置SqlSessionFactoryBean整合mybatis-->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+
+        <!--装配数据源-->
+        <property name="dataSource" ref="dataSource"/>
+
+        <!--指定mybatis全局配置文件位置-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+
+        <!--指定Mapper.xml配置文件的位置-->
+        <property name="mapperLocations" value="classpath:com/zpp/crowd/mapper/*Mapper.xml"/>
+
+        <!--配置分页插件-->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageHelper">
+                    <property name="properties">
+                        <props>
+                            <!--配置数据库方言 告诉PageHelper当前使用的数据库-->
+                            <prop key="dialect">mysql</prop>
+
+                            <!--配置页码的合理化修正 1~总页数之间修正页码 （就是页码限制：输入不正确页码时修正为正确页码）-->
+                            <prop key="reasonable">true</prop>
+                        </props>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+
+    <!-- 配置 MapperScannerConfigurer 扫秒Mapper接口所在的包-->
+    <!-- 把 MyBatis 创建的 Mapper 接口类型的代理对象扫描到 IOC 容器中 -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--扫描的包路径-->
+        <property name="basePackage" value="com.zpp.crowd.mapper"/>
+    </bean>
+</beans>

@@ -1,0 +1,13 @@
+spring:
+  redis:
+    host: 192.168.64.128
+  application:
+    name: zpp-crowd-redis
+server:
+  port: 3000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka
+

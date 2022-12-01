@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:comtext="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--解决找不到 配置类中的 自动注入的属性-->
+    <comtext:component-scan base-package="com.zpp.crowd.mvc.config"/>
+
+    <bean id="crowdfundingSecurityConfig" class="com.zpp.crowd.mvc.config.CrowdfundingSecurityConfig">
+
+    </bean>
+
+    <!--密码加密-->
+    <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+</beans>

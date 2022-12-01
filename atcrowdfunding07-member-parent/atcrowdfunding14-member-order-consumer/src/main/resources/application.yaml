@@ -1,0 +1,18 @@
+server:
+  port: 6000
+spring:
+  application:
+    name: zpp-crowd-order
+  redis:
+    host: 192.168.64.128
+  session:
+    store-type: redis
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka
+
+
+ribbon:
+  ReadTimeout: 12000
+  ConnectTimeout: 12000

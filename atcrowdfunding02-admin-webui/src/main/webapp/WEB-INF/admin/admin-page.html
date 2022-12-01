@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+
+<head th:include="admin/common/common-head ::common_head"></head>
+
+<script th:src="@{/jquery/jquery.pagination.js}"></script>
+
+<link rel="stylesheet" th:href="@{/css/pagination.css}">
+
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        // 调用后面声明的函数对页码导航条进行初始化操作
+        initPagination();
+
+
+        // 给父checkbox绑定单击响应函数--全选全不选
+        $("#summaryBox").click(function (){
+
+            // 获取当前多选框自身状态
+            var currentStatus= this.checked
+
+            // 全选全不选实现
+            $(".itemBox").prop("checked",currentStatus);
+        })
+
+        // 全选全不选的反向操作
+        $(".itemBox").click(function (){
+
+            // 获取当前已经选中的itemBox的数量
+            var checkedBoxCount=$(".itemBox:checked").length
+
+            // 获取全部的 itemBox 的数量
+            var totalBoxCount=$(".itemBox").length
+
+            // 反选实现
+            $("#summaryBox").prop("checked",checkedBoxCount==totalBoxCount)
+
+        })
+
+        $("#batchRemove").click(function () {
+            //存放id的数组
+            var adminIdList = []
+
+            // 获取选择的用户id并存入数组
+            $(".itemBox:checked").each(function () {
+                var adminId = this.id
+                adminIdList.push(adminId)
+            })
+
+            if (adminIdList.length == 0) {
+                layer.msg("请至少选择一个！")
+                return;
+            }
+            console.log(adminIdList)
+            var pageNum = [[${pageInfo.pageNum}]]//当前页
+            var keyword = [[${param.keyword}]]//搜索参数
+            if (keyword == null) {
+                keyword = "";
+            }
+            window.location.href = "/atcrowdfunding02_admin_webui/admin/remove/List?pageNum=" + pageNum + "&keyword=" + keyword+"&adminIdList="+adminIdList
+
+        })
+    });
+
+    // 生成页码导航条的初始化函数
+    function initPagination() {
+        // 获取总记录条数
+        var totalRecord = [[${pageInfo.total}]];
+
+        // 声明一个JSON对象存储Pagination要存储的属性
+        var properties = {
+            num_edge_entries: 3, // 边缘页数
+            num_display_entries: 5, // 主体页数
+            callback: pageSelectCallback, // 指定用户点击 "翻页"的按钮时跳转页面的回调函数
+            items_per_page: [[${pageInfo.pageSize}]], // 每页要显示的数据的数量
+            current_page: [[${pageInfo.pageNum}-1]], // pagination内部使用pageIndex来管理页码，pageIndex从0开始，pageNum从1开始，所以要 -1
+            prev_text: "上一页", // 上一页按钮上显示的文本
+            next_text: "下一页"  // 下一页按钮上显示的文本
+
+        };
+
+        // 生成页码导航条
+        $("#Pagination").pagination(totalRecord, properties)
+
+    }
+
+    // 回调函数的含义：声明出来以后不是自己调用，而是交给系统或框架调用
+    // 用户点击 ” 1,2,3“  这样的页码时调用这个函数实现页面跳转
+    // pageIndex是pagination传给我们那个 "从0开始" 的页码
+    function pageSelectCallback(pageIndex, jQuery) {
+        // 根据pageIndex计算pageNum
+        var pageNum = pageIndex + 1;
+        var keyword = [[${param.keyword}]];
+
+        // 第一次进入页面时 keyword是没有值的 默认值为null，会导致参数按照null去查询
+        if (keyword==null){
+            keyword="";
+        };
+        // 跳转页面
+        window.location.href = "?pageNum="+ pageNum+"&keyword="+keyword;
+
+        // 由于每一个页码按钮都是超链接，所以取消超链接的默认跳转行为
+        return false;
+    }
+
+</script>
+
+<body>
+
+<span th:include="admin/common/common-nav ::common_nav"></span>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+
+      <div  th:include="admin/common/common-sidebar ::common_sidebar"></div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-th"></i> 数据列表</h3>
+                </div>
+                <div class="panel-body">
+                    <form  th:action="@{/admin/get/page}"  class="form-inline" role="form" style="float:left;">
+                        <div class="form-group has-feedback">
+                            <div class="input-group">
+                                <div class="input-group-addon">查询条件</div>
+                                <input class="form-control has-success" name="keyword" type="text" placeholder="请输入查询条件">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询
+                        </button>
+                    </form>
+                    <button  id="batchRemove" type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i
+                            class=" glyphicon glyphicon-remove"></i> 删除
+                    </button>
+                    <!--新增-->
+                    <a th:href="@{/admin/to/add}" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i>新增</a>
+                    <br>
+                    <hr style="clear:both;">
+                    <div class="table-responsive">
+                        <table class="table  table-bordered">
+                            <thead>
+                            <tr>
+                                <th width="30">#</th>
+                                <th width="30"><input id="summaryBox" type="checkbox"></th>
+                                <th>账号</th>
+                                <th>名称</th>
+                                <th>邮箱地址</th>
+                                <th width="100">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${#lists.isEmpty(pageInfo.list)}">
+                                <td colspan="6" align="center">抱歉！没有查询到你想要的数据！</td>
+                            </tr>
+
+                            <tr th:if="${not #lists.isEmpty(pageInfo.list)}" th:each="admin,status: ${pageInfo.list}">
+                                <td th:text="${status.count}"></td>
+                                <td><input th:id="${admin.id}" class="itemBox" type="checkbox"></td>
+                                <td th:text="${admin.loginAcct}"></td>
+                                <td th:text="${admin.userName}"></td>
+                                <td th:text="${admin.email}"></td>
+                                <td>
+                                    <!--权限分配-->
+                                    <a th:href="@{/assign/to/role(adminId=${admin.id},pageNum=${pageInfo.pageNum},keyword=${param.keyword?:''})}" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></a>
+                                    <!--更新-->
+                                    <a th:href="@{/admin/edit(adminId=${admin.id},pageNum=${pageInfo.pageNum},keyword=${param.keyword?:''})}"  class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></a>
+                                    <!--删除-->
+                                    <a th:href="@{'/admin/remove/'+${admin.id}+'/'+${pageInfo.pageNum}+'/'+${param.keyword?:''}+'.html'}" class="btn btn-danger btn-xs" >
+                                        <i class=" glyphicon glyphicon-remove"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="6" align="center">
+                                    <div id="Pagination" class="pagination">
+                                        <!-- 这里显示分页 -->
+                                    </div>
+                                </td>
+                            </tr>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

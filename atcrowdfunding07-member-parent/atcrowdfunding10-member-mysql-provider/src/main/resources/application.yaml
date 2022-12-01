@@ -1,0 +1,23 @@
+server:
+  port: 2000
+spring:
+  application:
+    name: zpp-crowd-mysql
+  datasource:
+    name: mydb
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/project_crowd
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka
+
+mybatis:
+  mapper-locations: classpath*:/mybatis/mapper/*Mapper.xml
+logging:
+  level:
+    com.zpp.crowd.mapper: debug
+    com.zpp.crowd.test: debug

@@ -1,0 +1,27 @@
+server:
+  port: 7000
+spring:
+  application:
+    name: zpp-crowd-pay
+  redis:
+    host: 192.168.64.128
+  session:
+    store-type: redis
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka
+ribbon:
+  ReadTimeout: 12000
+  ConnectTimeout: 12000
+
+ali:
+  pay:
+    app-id: 2021000121689434
+    merchant-private-key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC/zo2bbr/yj4qPjWfSmf0ryZFXPyVg14J26KNney1zySPlWbnRuq0l8oY67dCGo9P2RqJehr2aAnTuaYecXPG3hJanJUqF/3GkvFmCkd7TrFOw/pPlipfEComNVXzfKhYwG6qKCWlX1B5onZJcMHcgTHjIydJUBaX55X9x26RqbYGT2an+WUU4UQ5SgIF4OJwmZpQk3isDmB+Tvhy58b52wXCeXCEyB9NSdGEQcbURawsTI4lnASbxowwcBXLMvr33qK+aP+kbANg7h5Wzr4eInJmIKIB+o0J2wm6mgbqORotJNMuHJFGsWR/x84lAnyJL9eFuY+snENtSmafBDq8/AgMBAAECggEAMAht9eq6Lug7bs+enGLrv7duqkap+aJ+jYCcyyFRtJk+YAUkP51cFxCxBLjha5ZDUn1F1B4yBQtwdPQAfevYrHiLsbfo/b2GnBZ+4+/buW6CVuSp7OXUM8ffwoESEGDdxZZoEsFgnBoGs3QiXuvUKUZ9SOshvODdO8N5Mu4qMmxip3m4m6f41Jky0kbVl6s5McnYFM0BisOKiZauGKOAl/5iLPK1+qfdKHQNeA5X/XGNyKfbU28d3WpYADhznhuWs814orQJT40/MnX10OfNawnzR+62uXn/J52RnqocyV72IPMZWxPcISjr8tcILhlLqoDCqF1SLgpvHuczR9v6AQKBgQDuwsxb2KRwuFmIdSbze5jJqxGPB6ifzzXo3s21fN8cXu4S5POnnX/PuHlaP2BaFa/W8h4MyYsgo3w+yw+U+4/hBdSY0TEo7cu0l4QDNQ1SaXxyu1B09U2uJewWVbgNYbmLuYSG2SLjCn1ViofvJLVsCZVd0p52MUx4+Fu48+I5QQKBgQDNp93SlkFFHGr1rodqciki9BQKEHbFS+OY5XZN6uAzOlha3VU2TIAnyOGqOSSSZFdC8bOggJjh2/fsKTVypdUBBHs76B55PeOcUGOHaAWgVNsrsytMfCh1h9thK/rZ2xGnho9Z3AhuvbtkJRywjZIViX+xU0VC3jw5Rt0gazpIfwKBgQDPVN09DJ2PPKaS9piCatu8lA7FU3M8gyVfOMsNRIhCDLVUNvjWntA0Qw8uLUawM5DkaI9rr0BfcVgc9xxq1SCV2QhKQ64aypRQGBqM5m7RF8T3pG0zgyiXh1rB8mHHTQtgqBLLPpcq7Rr1QzzTj97zGEdal+D+5cRwb8rGixHxgQKBgHy6xyqlvshvx99iDvdcbd6pMk44VhCrSkq9QNdZEMmBJX1WqAvasg9vIo7fQXMYMGSFu3ApDpBNnTw6chQqx9lqImPfEDxwcM+pYfQJ/v+S96q1bBljZBaEY2W4Cth+qWJ1lhPmA6dGo5TFfXUHKAav8iZWXreDmfsTI6I55ot5AoGADTrJjRycAPjtTe0t21nNkLg+iH8weZtyRC7r3AYApA3Bp61JXjhLIQOJQhayhMA+yTck0ZYqu3sNv2Ec8+zlCGPn6WI7vdzMIZ5ppzhthvWUplYUhOk9uSVeh7IDxW1KcjPsZWw/nOU9KMLchYLuDimVOiPaej45pYWh8kex620=
+    alipay-public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAik13FS68wMFHoesfETaa0X/tM/pb/7L0XGadKyZyfE3VZx/bCJ2xrtAyy6MYVzg21TyWM8Sy2D+IGe9Q27MVkhkc0sW9R62KOsvaV14aVQ0XO3HXCh4wNv6jlrvhM5dVuQ4nfjXHsM61g503BBKvMGWpbgRa5twIvIcYKn5kxafM8BTcI26fujd5Mo8XBfoKQ3JmyaERHi8f343+h3SnEOxfCf8ZN0k23IhqYF7wn0JPtxnNsU/lO2xC/ugej18cTBt8FwBLHIl1SeYTjCHgPaUX4E9tBBDXdssEsfXFKVRMUUqPa8+6s/beM0XL7zKiLIK9LY6ukzaC6NLl68A+0wIDAQAB
+    notify-url: http://hfyyug.natappfree.cc/pay/notify  #使用内网穿透时 填写的具体值
+    return-url: http://localhost/pay/return  #kjgmew.natappfree.cc 该值是不固定的，每次启动netapp时的具体值为准
+    charset: utf-8
+    sign-type: RSA2
+    gateway-url: https://openapi.alipaydev.com/gateway.do

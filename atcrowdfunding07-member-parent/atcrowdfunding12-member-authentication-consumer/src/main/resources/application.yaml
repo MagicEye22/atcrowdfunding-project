@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: zpp-crowd-auth
+  thymeleaf:
+    cache: false  # 禁用缓存
+  session:
+    store-type: redis
+  redis:
+    host: 192.168.64.128
+server:
+  port: 4000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka
+
+#短信服务api
+short:
+  message:
+    app-code: bb0965dafdcb407fa3695a38992acebf
+    template-id: TPL_0001
+    path: /send_sms
+    method: POST
+    host: https://wwsms.market.alicloudapi.com
+
+ribbon:
+  ReadTimeout: 12000
+  ConnectTimeout: 12000
