@@ -63,7 +63,7 @@ public class CrowdfundingSecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage("/admin")//指定登录的页面
                 .loginProcessingUrl("/security/admin/do/login")//指定处理登录的请求
-                .defaultSuccessUrl("/admin/to/main")//登录成功后去的页面
+                .defaultSuccessUrl("/admin/to/main",true)//登录成功后去的页面
                 // 修改默认登录表单接收的请求参数名
                 .usernameParameter("loginAcct")
                 .passwordParameter("userPass");
