@@ -13,11 +13,11 @@ eureka:
       defaultZone: http://localhost:1000/eureka
 aliyun:
   oss:
-    access-key-id: LTAI5tK1TTWo1f1LbbojPafF
-    access-key-secret: JRCMJkJBkwmNqKtYWp0vNGgeSZg4WL
-    bucket-domain: http://crowd-project-zpp.oss-cn-guangzhou.aliyuncs.com
-    bucket-name: crowd-project-zpp
-    end-point: http://oss-cn-guangzhou.aliyuncs.com
+    access-key-id: 
+    access-key-secret: 
+    bucket-domain: 
+    bucket-name:
+    end-point: 
 
 ribbon:
   ReadTimeout: 12000
